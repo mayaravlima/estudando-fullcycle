@@ -1,9 +1,27 @@
-plugins {
-    id("java")
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.flywaydb:flyway-mysql:10.6.0"
+    }
 }
 
-group = "com.postech.catalog.infrastructure"
-version = "1.0-SNAPSHOT"
+plugins {
+    id "java"
+    id "application"
+    id "org.springframework.boot" version "3.2.2"
+    id "io.spring.dependency-management" version "1.1.4"
+    id "org.flywaydb.flyway" version "10.6.0"
+}
+
+group "com.fullcycle.admin.catalogo.infrastructure"
+version "1.0-SNAPSHOT"
+
+bootJar {
+    archiveFileName.set("application.jar")
+    destinationDirectory.set(file("${rootProject.buildDir}/libs"))
+}
 
 repositories {
     mavenCentral()
@@ -13,10 +31,29 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":application"))
 
-    testImplementation(platform("org.junit:junit-bom:5.9.1"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
+    implementation("com.mysql:mysql-connector-j:8.1.0")
+
+    implementation("org.springframework.boot:spring-boot-starter-web") {
+        exclude module: "spring-boot-starter-tomcat"
+    }
+    implementation("org.springframework.boot:spring-boot-starter-undertow")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa") {
+        exclude group: 'io.vavr'
+    }
+    implementation("io.vavr:vavr:0.10.4")
+
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+    testRuntimeOnly("com.h2database:h2")
 }
 
-tasks.test {
+flyway {
+    url = System.getenv('FLYWAY_DB') ?: 'jdbc:mysql://localhost:3306/admin_videos'
+    user = System.getenv('FLYWAY_USER') ?: 'root'
+    password = System.getenv('FLYWAY_PASS') ?: '123456'
+}
+
+
+test {
     useJUnitPlatform()
 }
