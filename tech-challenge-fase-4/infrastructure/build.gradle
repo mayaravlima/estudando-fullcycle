@@ -42,6 +42,10 @@ dependencies {
     }
     implementation("io.vavr:vavr:0.10.4")
 
+    compileOnly("org.projectlombok:lombok:1.18.30")
+    annotationProcessor("org.projectlombok:lombok:1.18.30")
+
+    testImplementation("org.flywaydb:flyway-core:9.16.0")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 
     testRuntimeOnly("com.h2database:h2")
