@@ -11,6 +11,7 @@ import com.postech.catalog.infrastructure.utils.SpecificationUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -53,16 +54,13 @@ public class CategoryMySQLGateway implements CategoryGateway {
         final var page = PageRequest.of(
                 query.page(),
                 query.perPage(),
-                Sort.by(Sort.Direction.fromString(query.direction()), query.sort())
+                Sort.by(Direction.fromString(query.direction()), query.sort())
         );
 
         final var specifications = Optional.ofNullable(query.terms())
                 .filter(str -> !str.isBlank())
-                .map(str ->
-                        SpecificationUtils
-                                .<CategoryJpaEntity>like("name", str)
-                                .or(like("description", str))
-                ).orElse(null);
+                .map(this::assembleSpecification)
+                .orElse(null);
 
         final var pageResult =
                 this.categoryRepository.findAll(Specification.where(specifications), page);
@@ -79,6 +77,12 @@ public class CategoryMySQLGateway implements CategoryGateway {
         return this.categoryRepository
                 .save(CategoryJpaEntity.from(category))
                 .toAggregate();
+    }
+
+    private Specification<CategoryJpaEntity> assembleSpecification(final String str) {
+        final Specification<CategoryJpaEntity> nameLike = like("name", str);
+        final Specification<CategoryJpaEntity> descriptionLike = like("description", str);
+        return nameLike.or(descriptionLike);
     }
 
 

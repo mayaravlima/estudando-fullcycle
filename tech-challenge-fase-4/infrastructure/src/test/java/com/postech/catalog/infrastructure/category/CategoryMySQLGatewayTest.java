@@ -3,7 +3,7 @@ package com.postech.catalog.infrastructure.category;
 import com.postech.catalog.domain.catagory.Category;
 import com.postech.catalog.domain.catagory.CategoryID;
 import com.postech.catalog.domain.catagory.CategorySearchQuery;
-import com.postech.catalog.infrastructure.MySQLGatewayTest;
+import com.postech.catalog.MySQLGatewayTest;
 import com.postech.catalog.infrastructure.category.persistence.CategoryJpaEntity;
 import com.postech.catalog.infrastructure.category.persistence.CategoryRepository;
 import org.junit.jupiter.api.Test;

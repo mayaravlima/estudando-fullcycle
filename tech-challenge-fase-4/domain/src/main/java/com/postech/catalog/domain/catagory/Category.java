@@ -1,17 +1,19 @@
 package com.postech.catalog.domain.catagory;
 
 import com.postech.catalog.domain.AggregateRoot;
+import com.postech.catalog.domain.utils.InstantUtils;
 import com.postech.catalog.domain.validation.ValidationHandler;
 
 import java.time.Instant;
 
-public class Category extends AggregateRoot<CategoryID> implements Cloneable{
+public class Category extends AggregateRoot<CategoryID> implements Cloneable {
     private String name;
     private String description;
     private boolean active;
     private Instant createdAt;
     private Instant updatedAt;
     private Instant deletedAt;
+
 
     public Category(
             final CategoryID id,
@@ -37,7 +39,7 @@ public class Category extends AggregateRoot<CategoryID> implements Cloneable{
             final boolean aActive
     ) {
         final var id = CategoryID.unique();
-        final var now = Instant.now();
+        final var now = InstantUtils.now();
         final var deletedAt = aActive ? null : now;
         return new Category(
                 id,
@@ -70,15 +72,15 @@ public class Category extends AggregateRoot<CategoryID> implements Cloneable{
         );
     }
 
-    public static Category with(final Category aCategory) {
+    public static Category with(final Category category) {
         return with(
-                aCategory.getId(),
-                aCategory.name,
-                aCategory.description,
-                aCategory.active,
-                aCategory.createdAt,
-                aCategory.updatedAt,
-                aCategory.deletedAt
+                category.getId(),
+                category.name,
+                category.description,
+                category.active,
+                category.createdAt,
+                category.updatedAt,
+                category.deletedAt
         );
     }
 
@@ -90,17 +92,17 @@ public class Category extends AggregateRoot<CategoryID> implements Cloneable{
     public Category activate() {
         this.deletedAt = null;
         this.active = true;
-        this.updatedAt = Instant.now();
+        this.updatedAt = InstantUtils.now();
         return this;
     }
 
     public Category deactivate() {
         if (getDeletedAt() == null) {
-            this.deletedAt = Instant.now();
+            this.deletedAt = InstantUtils.now();
         }
 
         this.active = false;
-        this.updatedAt = Instant.now();
+        this.updatedAt = InstantUtils.now();
         return this;
     }
 
@@ -117,7 +119,7 @@ public class Category extends AggregateRoot<CategoryID> implements Cloneable{
 
         this.name = aName;
         this.description = aDescription;
-        this.updatedAt = Instant.now();
+        this.updatedAt = InstantUtils.now();
         return this;
     }
 

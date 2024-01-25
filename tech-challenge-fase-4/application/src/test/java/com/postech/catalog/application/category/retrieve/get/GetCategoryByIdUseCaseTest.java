@@ -46,13 +46,13 @@ public class GetCategoryByIdUseCaseTest {
 
         final var actualCategory = useCase.execute(expectedId.getValue());
 
-        Assertions.assertEquals(expectedId, actualCategory.id());
-        Assertions.assertEquals(expectedName, actualCategory.name());
-        Assertions.assertEquals(expectedDescription, actualCategory.description());
-        Assertions.assertEquals(expectedIsActive, actualCategory.isActive());
-        Assertions.assertEquals(aCategory.getCreatedAt(), actualCategory.createdAt());
-        Assertions.assertEquals(aCategory.getUpdatedAt(), actualCategory.updatedAt());
-        Assertions.assertEquals(aCategory.getDeletedAt(), actualCategory.deletedAt());
+        assertEquals(expectedId, actualCategory.id());
+        assertEquals(expectedName, actualCategory.name());
+        assertEquals(expectedDescription, actualCategory.description());
+        assertEquals(expectedIsActive, actualCategory.isActive());
+        assertEquals(aCategory.getCreatedAt(), actualCategory.createdAt());
+        assertEquals(aCategory.getUpdatedAt(), actualCategory.updatedAt());
+        assertEquals(aCategory.getDeletedAt(), actualCategory.deletedAt());
     }
 
     @Test
