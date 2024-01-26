@@ -1,9 +1,9 @@
 package com.postech.catalog.infrastructure.category;
 
+import com.postech.catalog.MySQLGatewayTest;
 import com.postech.catalog.domain.catagory.Category;
 import com.postech.catalog.domain.catagory.CategoryID;
 import com.postech.catalog.domain.catagory.CategorySearchQuery;
-import com.postech.catalog.MySQLGatewayTest;
 import com.postech.catalog.infrastructure.category.persistence.CategoryJpaEntity;
 import com.postech.catalog.infrastructure.category.persistence.CategoryRepository;
 import org.junit.jupiter.api.Test;
@@ -144,7 +144,7 @@ public class CategoryMySQLGatewayTest {
 
         assertEquals(1, categoryRepository.count());
 
-        final var actualCategory =  categoryMySQLGateway.findById(category.getId()).get();
+        final var actualCategory = categoryMySQLGateway.findById(category.getId()).get();
 
         assertEquals(1, categoryRepository.count());
 
@@ -325,7 +325,6 @@ public class CategoryMySQLGatewayTest {
         assertEquals(expectedPerPage, actualResult.items().size());
         assertEquals(films.getId(), actualResult.items().get(0).getId());
     }
-
 
 
 }

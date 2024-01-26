@@ -3,7 +3,7 @@ package com.postech.catalog.application.category.update;
 import com.postech.catalog.domain.catagory.Category;
 import com.postech.catalog.domain.catagory.CategoryGateway;
 import com.postech.catalog.domain.catagory.CategoryID;
-import com.postech.catalog.domain.exceptions.DomainException;
+import com.postech.catalog.domain.exceptions.NotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -188,7 +188,6 @@ public class UpdateCategoryUseCaseTest {
         final var expectedDescription = "Movie description";
         final var expectedIsActive = true;
         final var expectedExceptionMessage = "Category with ID 123 was not found";
-        final var expectedErrorCount = 1;
         final var expectedId = "123";
 
         final var command = UpdateCategoryCommand.with(
@@ -201,10 +200,9 @@ public class UpdateCategoryUseCaseTest {
         when(categoryGateway.findById(eq(CategoryID.from(expectedId))))
                 .thenReturn(Optional.empty());
 
-        final var actualException = assertThrows(DomainException.class, () -> useCase.execute(command));
+        final var actualException = assertThrows(NotFoundException.class, () -> useCase.execute(command));
 
-        assertEquals(expectedExceptionMessage, actualException.getErrors().get(0).message());
-        assertEquals(expectedErrorCount, actualException.getErrors().size());
+        assertEquals(expectedExceptionMessage, actualException.getMessage());
 
         verify(categoryGateway, times(1)).findById(CategoryID.from(expectedId));
         verify(categoryGateway, times(0)).update(any());

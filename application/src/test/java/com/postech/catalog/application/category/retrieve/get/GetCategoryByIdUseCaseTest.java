@@ -3,8 +3,7 @@ package com.postech.catalog.application.category.retrieve.get;
 import com.postech.catalog.domain.catagory.Category;
 import com.postech.catalog.domain.catagory.CategoryGateway;
 import com.postech.catalog.domain.catagory.CategoryID;
-import com.postech.catalog.domain.exceptions.DomainException;
-import org.junit.jupiter.api.Assertions;
+import com.postech.catalog.domain.exceptions.NotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,7 +13,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -64,7 +64,7 @@ public class GetCategoryByIdUseCaseTest {
                 .thenReturn(Optional.empty());
 
         final var actualException = assertThrows
-                (DomainException.class, () -> useCase.execute(expectedId.getValue()));
+                (NotFoundException.class, () -> useCase.execute(expectedId.getValue()));
 
         assertEquals(expectedErrorMessage, actualException.getMessage());
     }

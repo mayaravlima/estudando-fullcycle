@@ -4,15 +4,15 @@ import com.postech.catalog.domain.catagory.Category;
 import com.postech.catalog.domain.catagory.CategoryGateway;
 import com.postech.catalog.domain.catagory.CategoryID;
 import com.postech.catalog.domain.exceptions.DomainException;
-import com.postech.catalog.domain.validation.Error;
+import com.postech.catalog.domain.exceptions.NotFoundException;
 import com.postech.catalog.domain.validation.handler.Notification;
-import io.vavr.API;
 import io.vavr.control.Either;
 
 import java.util.Objects;
 import java.util.function.Supplier;
 
-import static io.vavr.API.*;
+import static io.vavr.API.Left;
+import static io.vavr.API.Try;
 
 public class DefaultUpdateCategoryUseCase extends UpdateCategoryUseCase {
 
@@ -48,6 +48,6 @@ public class DefaultUpdateCategoryUseCase extends UpdateCategoryUseCase {
 
     private static Supplier<DomainException> notFound(CategoryID id) {
         return () ->
-                DomainException.with(new Error("Category with ID %s was not found".formatted(id.getValue())));
+                NotFoundException.with(Category.class, id);
     }
 }

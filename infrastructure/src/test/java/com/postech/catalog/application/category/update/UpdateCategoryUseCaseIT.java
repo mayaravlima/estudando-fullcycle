@@ -3,13 +3,12 @@ package com.postech.catalog.application.category.update;
 import com.postech.catalog.IntegrationTest;
 import com.postech.catalog.domain.catagory.Category;
 import com.postech.catalog.domain.catagory.CategoryGateway;
-import com.postech.catalog.domain.exceptions.DomainException;
+import com.postech.catalog.domain.exceptions.NotFoundException;
 import com.postech.catalog.infrastructure.category.persistence.CategoryJpaEntity;
 import com.postech.catalog.infrastructure.category.persistence.CategoryRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.data.crossstore.ChangeSetPersister;
 
 import java.util.Arrays;
 
@@ -176,7 +175,6 @@ public class UpdateCategoryUseCaseIT {
         final var expectedDescription = "Category description";
         final var expectedIsActive = false;
         final var expectedId = "123";
-        final var expectedErrorCount = 1;
         final var expectedErrorMessage = "Category with ID 123 was not found";
 
         final var command = UpdateCategoryCommand.with(
@@ -187,7 +185,7 @@ public class UpdateCategoryUseCaseIT {
         );
 
         final var actualException =
-                assertThrows(DomainException.class, () -> useCase.execute(command));
+                assertThrows(NotFoundException.class, () -> useCase.execute(command));
 
         assertEquals(expectedErrorMessage, actualException.getMessage());
     }

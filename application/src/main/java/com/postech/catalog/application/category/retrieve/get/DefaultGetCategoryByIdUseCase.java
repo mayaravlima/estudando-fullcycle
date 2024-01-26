@@ -1,9 +1,10 @@
 package com.postech.catalog.application.category.retrieve.get;
 
+import com.postech.catalog.domain.catagory.Category;
 import com.postech.catalog.domain.catagory.CategoryGateway;
 import com.postech.catalog.domain.catagory.CategoryID;
 import com.postech.catalog.domain.exceptions.DomainException;
-import com.postech.catalog.domain.validation.Error;
+import com.postech.catalog.domain.exceptions.NotFoundException;
 
 import java.util.Objects;
 import java.util.function.Supplier;
@@ -25,7 +26,9 @@ public class DefaultGetCategoryByIdUseCase extends GetCategoryByIdUseCase {
     }
 
     private static Supplier<DomainException> notFound(CategoryID id) {
-        return () ->
-                DomainException.with(new Error("Category with ID %s was not found".formatted(id.getValue())));
+        return () -> NotFoundException.with(
+                Category.class,
+                id
+        );
     }
 }

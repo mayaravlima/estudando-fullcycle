@@ -4,14 +4,13 @@ import com.postech.catalog.IntegrationTest;
 import com.postech.catalog.domain.catagory.Category;
 import com.postech.catalog.domain.catagory.CategoryGateway;
 import com.postech.catalog.domain.catagory.CategoryID;
-import com.postech.catalog.domain.exceptions.DomainException;
+import com.postech.catalog.domain.exceptions.NotFoundException;
 import com.postech.catalog.infrastructure.category.persistence.CategoryJpaEntity;
 import com.postech.catalog.infrastructure.category.persistence.CategoryRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.data.crossstore.ChangeSetPersister;
 
 import java.util.Arrays;
 
@@ -62,7 +61,7 @@ public class GetCategoryByIdUseCaseIT {
         final var expectedId = CategoryID.from("123");
 
         final var actualException = assertThrows(
-                DomainException.class,
+                NotFoundException.class,
                 () -> useCase.execute(expectedId.getValue())
         );
 

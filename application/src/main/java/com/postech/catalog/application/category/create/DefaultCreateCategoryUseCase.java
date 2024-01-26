@@ -3,12 +3,12 @@ package com.postech.catalog.application.category.create;
 import com.postech.catalog.domain.catagory.Category;
 import com.postech.catalog.domain.catagory.CategoryGateway;
 import com.postech.catalog.domain.validation.handler.Notification;
-import io.vavr.API;
 import io.vavr.control.Either;
 
 import java.util.Objects;
 
-import static io.vavr.API.*;
+import static io.vavr.API.Left;
+import static io.vavr.API.Try;
 
 public class DefaultCreateCategoryUseCase extends CreateCategoryUseCase {
 

@@ -7,7 +7,6 @@ import com.postech.catalog.domain.catagory.CategorySearchQuery;
 import com.postech.catalog.domain.pagination.Pagination;
 import com.postech.catalog.infrastructure.category.persistence.CategoryJpaEntity;
 import com.postech.catalog.infrastructure.category.persistence.CategoryRepository;
-import com.postech.catalog.infrastructure.utils.SpecificationUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;

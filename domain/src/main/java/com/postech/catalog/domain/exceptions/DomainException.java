@@ -6,20 +6,19 @@ import java.util.List;
 
 public class DomainException extends NoStacktraceException {
 
-    private final List<Error> errors;
+    protected final List<Error> errors;
 
-
-    private DomainException(final String message, final List<Error> errors) {
+    protected DomainException(final String message, final List<Error> error) {
         super(message);
-        this.errors = errors;
+        this.errors = error;
     }
 
-    public static DomainException with(final Error errors) {
-        return new DomainException(errors.message(), List.of(errors));
+    public static DomainException with(final Error error) {
+        return new DomainException(error.message(), List.of(error));
     }
 
-    public static DomainException with(final List<Error> errors) {
-        return new DomainException("", errors);
+    public static DomainException with(final List<Error> error) {
+        return new DomainException("", error);
     }
 
     public List<Error> getErrors() {
