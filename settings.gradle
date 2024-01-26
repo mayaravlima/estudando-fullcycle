@@ -1,0 +1,4 @@
+rootProject.name = "tech-challenge-fase-4"
+include("domain")
+include("application")
+include("infrastructure")
