@@ -14,7 +14,6 @@ public class Category extends AggregateRoot<CategoryID> implements Cloneable {
     private Instant updatedAt;
     private Instant deletedAt;
 
-
     public Category(
             final CategoryID id,
             final String name,
