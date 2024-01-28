@@ -7,6 +7,8 @@ import com.postech.catalog.domain.validation.Validator;
 public class VideoValidator extends Validator {
 
     private static final int TITLE_MAX_LENGTH = 255;
+
+    private static final int URL_MAX_LENGTH = 255;
     private static final int DESCRIPTION_MAX_LENGTH = 4_000;
 
     private final Video video;
@@ -20,8 +22,7 @@ public class VideoValidator extends Validator {
     public void validate() {
         checkTitleConstraints();
         checkDescriptionConstraints();
-        checkLaunchedAtConstraints();
-        checkRatingConstraints();
+        checkUrlConstraints();
     }
 
     private void checkTitleConstraints() {
@@ -60,15 +61,23 @@ public class VideoValidator extends Validator {
         }
     }
 
-    private void checkLaunchedAtConstraints() {
-        if (this.video.getLaunchedAt() == null) {
-            this.validationHandler().append(new Error("'launchedAt' should not be null"));
+    private void checkUrlConstraints() {
+        final var url = this.video.getUrl();
+        if (url == null) {
+            this.validationHandler().append(new Error("'url' should not be null"));
+            return;
+        }
+
+        if (url.isBlank()) {
+            this.validationHandler().append(new Error("'url' should not be empty"));
+            return;
+        }
+
+        final int length = url.trim().length();
+        if (length > URL_MAX_LENGTH) {
+            this.validationHandler().append(new Error("'url' must be between 1 and 255 characters"));
         }
     }
 
-    private void checkRatingConstraints() {
-        if (this.video.getRating() == null) {
-            this.validationHandler().append(new Error("'rating' should not be null"));
-        }
-    }
+
 }

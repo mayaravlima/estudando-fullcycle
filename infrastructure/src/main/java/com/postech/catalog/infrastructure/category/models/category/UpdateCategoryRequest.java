@@ -1,10 +1,11 @@
-package com.postech.catalog.infrastructure.category.models;
+package com.postech.catalog.infrastructure.category.models.category;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public record CreateCategoryRequest(
+public record UpdateCategoryRequest(
         @JsonProperty("name") String name,
         @JsonProperty("description") String description,
         @JsonProperty("is_active") Boolean active
 ) {
+
 }
