@@ -13,13 +13,15 @@ import com.postech.catalog.domain.catagory.CategorySearchQuery;
 import com.postech.catalog.domain.pagination.Pagination;
 import com.postech.catalog.domain.validation.handler.Notification;
 import com.postech.catalog.infrastructure.api.CategoryAPI;
-import com.postech.catalog.infrastructure.category.models.CategoryListResponse;
-import com.postech.catalog.infrastructure.category.models.CategoryResponse;
-import com.postech.catalog.infrastructure.category.models.CreateCategoryRequest;
-import com.postech.catalog.infrastructure.category.models.UpdateCategoryRequest;
+import com.postech.catalog.infrastructure.category.models.category.CategoryListResponse;
+import com.postech.catalog.infrastructure.category.models.category.CategoryResponse;
+import com.postech.catalog.infrastructure.category.models.category.CreateCategoryRequest;
+import com.postech.catalog.infrastructure.category.models.category.UpdateCategoryRequest;
 import com.postech.catalog.infrastructure.category.presenters.CategoryApiPresenter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.util.function.Function;
@@ -48,7 +50,7 @@ public class CategoryController implements CategoryAPI {
     }
 
     @Override
-    public ResponseEntity<?> createCategory(final CreateCategoryRequest input) {
+    public Mono<ResponseEntity<?>> createCategory(final CreateCategoryRequest input) {
         final var command = CreateCategoryCommand.with(
                 input.name(),
                 input.description(),
@@ -61,29 +63,34 @@ public class CategoryController implements CategoryAPI {
         final Function<CreateCategoryOutput, ResponseEntity<?>> onSuccess = output ->
                 ResponseEntity.created(URI.create("/categories/" + output.id())).body(output);
 
-        return this.createCategoryUseCase.execute(command)
-                .fold(onError, onSuccess);
+        return Mono.just(this.createCategoryUseCase.execute(command)
+                .fold(onError, onSuccess));
     }
 
     @Override
-    public Pagination<CategoryListResponse> listCategories(
+    public Flux<Pagination<CategoryListResponse>> listCategories(
             final String search,
             final int page,
             final int perPage,
             final String sort,
             final String direction
     ) {
-        return listCategoriesUseCase.execute(new CategorySearchQuery(page, perPage, search, sort, direction))
-                .map(CategoryApiPresenter::present);
+        return Flux.defer(() ->
+                Mono.fromCallable(() ->
+                                listCategoriesUseCase.execute(new CategorySearchQuery(page, perPage, search, sort, direction))
+                        )
+                        .map(CategoryApiPresenter::present)
+                        .flatMapMany(Flux::just)
+        );
     }
 
     @Override
-    public CategoryResponse getById(final String id) {
-        return CategoryApiPresenter.present(this.getCategoryByIdUseCase.execute(id));
+    public Mono<CategoryResponse> getById(final String id) {
+        return(Mono.just(CategoryApiPresenter.present(this.getCategoryByIdUseCase.execute(id))));
     }
 
     @Override
-    public ResponseEntity<?> updateById(final String id, final UpdateCategoryRequest input) {
+    public Mono<ResponseEntity<?>> updateById(final String id, final UpdateCategoryRequest input) {
         final var command = UpdateCategoryCommand.with(
                 id,
                 input.name(),
@@ -97,8 +104,8 @@ public class CategoryController implements CategoryAPI {
         final Function<UpdateCategoryOutput, ResponseEntity<?>> onSuccess =
                 ResponseEntity::ok;
 
-        return this.updateCategoryUseCase.execute(command)
-                .fold(onError, onSuccess);
+        return Mono.just(this.updateCategoryUseCase.execute(command)
+                .fold(onError, onSuccess));
     }
 
     @Override

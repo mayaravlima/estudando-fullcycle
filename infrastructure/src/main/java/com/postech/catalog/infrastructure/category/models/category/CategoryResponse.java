@@ -1,4 +1,4 @@
-package com.postech.catalog.infrastructure.category.models;
+package com.postech.catalog.infrastructure.category.models.category;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
