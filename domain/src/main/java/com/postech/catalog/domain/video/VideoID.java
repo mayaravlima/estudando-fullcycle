@@ -1,29 +1,28 @@
-package com.postech.catalog.domain.catagory;
+package com.postech.catalog.domain.video;
 
 import com.postech.catalog.domain.Identifier;
 
 import java.util.Objects;
 import java.util.UUID;
 
-public class CategoryID extends Identifier {
+public class VideoID extends Identifier {
 
     private final String value;
 
-    private CategoryID(final String value) {
-        Objects.requireNonNull(value);
-        this.value = value;
+    private VideoID(final String value) {
+        this.value = Objects.requireNonNull(value);
     }
 
-    public static CategoryID unique() {
-        return CategoryID.from(UUID.randomUUID());
+    public static VideoID from(final String value) {
+        return new VideoID(value.toLowerCase());
     }
 
-    public static CategoryID from(final String value) {
-        return new CategoryID(value);
+    public static VideoID from(final UUID value) {
+        return new VideoID(value.toString());
     }
 
-    public static CategoryID from(final UUID value) {
-        return new CategoryID(value.toString().toLowerCase());
+    public static VideoID unique() {
+        return VideoID.from(UUID.randomUUID());
     }
 
     @Override
@@ -35,7 +34,7 @@ public class CategoryID extends Identifier {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CategoryID that = (CategoryID) o;
+        VideoID that = (VideoID) o;
         return Objects.equals(getValue(), that.getValue());
     }
 
