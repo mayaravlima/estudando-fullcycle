@@ -5,6 +5,7 @@ import com.postech.catalog.domain.validation.ValidationHandler;
 import com.postech.catalog.domain.video.VideoID;
 
 import java.time.Instant;
+import java.util.Collections;
 import java.util.Set;
 
 public class User extends AggregateRoot<UserID> {
@@ -99,7 +100,7 @@ public class User extends AggregateRoot<UserID> {
     }
 
     public Set<VideoID> getFavorites() {
-        return favorites;
+        return favorites != null ? Collections.unmodifiableSet(favorites) : Collections.emptySet();
     }
 
     public void setFavorites(Set<VideoID> favorites) {

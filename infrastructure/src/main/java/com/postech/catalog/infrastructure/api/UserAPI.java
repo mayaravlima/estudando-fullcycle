@@ -1,10 +1,7 @@
 package com.postech.catalog.infrastructure.api;
 
 import com.postech.catalog.domain.pagination.Pagination;
-import com.postech.catalog.infrastructure.user.models.CreateUserRequest;
-import com.postech.catalog.infrastructure.user.models.UpdateUserRequest;
-import com.postech.catalog.infrastructure.user.models.UserListResponse;
-import com.postech.catalog.infrastructure.user.models.UserResponse;
+import com.postech.catalog.infrastructure.user.models.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -16,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
 import java.util.Set;
 
 @RequestMapping(value = "users")
@@ -48,6 +46,15 @@ public interface UserAPI {
             @RequestParam(name = "dir", required = false, defaultValue = "desc") final String direction,
             @RequestParam(name = "favorites_ids", required = false, defaultValue = "") Set<String> favorites
     );
+
+    @GetMapping("/{id}/recommendations")
+    @Operation(summary = "Get recommendations based on user favorites")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Listed successfully"),
+            @ApiResponse(responseCode = "422", description = "A invalid parameter was received"),
+            @ApiResponse(responseCode = "500", description = "An internal server error was thrown"),
+    })
+    Flux<List<UserRecommendationResponse>> getRecommendations(@PathVariable(name = "id") String id);
 
     @GetMapping(
             value = "{id}",
@@ -85,3 +92,4 @@ public interface UserAPI {
     })
     void deleteById(@PathVariable(name = "id") String id);
 }
+
