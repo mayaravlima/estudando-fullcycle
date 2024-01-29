@@ -5,6 +5,7 @@ import com.postech.catalog.application.user.create.CreateUserOutput;
 import com.postech.catalog.application.user.create.CreateUserUseCase;
 import com.postech.catalog.application.user.delete.DeleteUserUseCase;
 import com.postech.catalog.application.user.retrieve.get.GetUserByIdUseCase;
+import com.postech.catalog.application.user.retrieve.list.ListRecommendationsUseCase;
 import com.postech.catalog.application.user.retrieve.list.ListUsersUseCase;
 import com.postech.catalog.application.user.update.UpdateUserCommand;
 import com.postech.catalog.application.user.update.UpdateUserOutput;
@@ -14,10 +15,7 @@ import com.postech.catalog.domain.user.UserSearchQuery;
 import com.postech.catalog.domain.validation.handler.Notification;
 import com.postech.catalog.domain.video.VideoID;
 import com.postech.catalog.infrastructure.api.UserAPI;
-import com.postech.catalog.infrastructure.user.models.CreateUserRequest;
-import com.postech.catalog.infrastructure.user.models.UpdateUserRequest;
-import com.postech.catalog.infrastructure.user.models.UserListResponse;
-import com.postech.catalog.infrastructure.user.models.UserResponse;
+import com.postech.catalog.infrastructure.user.models.*;
 import com.postech.catalog.infrastructure.user.presenters.UserApiPresenter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,6 +23,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
 
@@ -38,18 +37,30 @@ public class UserController implements UserAPI {
     private final GetUserByIdUseCase getUserByIdUseCase;
     private final UpdateUserUseCase updateUserUseCase;
     private final DeleteUserUseCase deleteUserUseCase;
+    private final ListRecommendationsUseCase listRecommendationsUseCase;
 
     public UserController(
             final CreateUserUseCase createUserUseCase,
             final ListUsersUseCase listUsersUseCase,
             final GetUserByIdUseCase getUserByIdUseCase,
             final UpdateUserUseCase updateUserUseCase,
-            final DeleteUserUseCase deleteUserUseCase) {
+            final DeleteUserUseCase deleteUserUseCase,
+            final ListRecommendationsUseCase listRecommendationsUseCase) {
         this.createUserUseCase = createUserUseCase;
         this.listUsersUseCase = listUsersUseCase;
         this.getUserByIdUseCase = getUserByIdUseCase;
         this.updateUserUseCase = updateUserUseCase;
         this.deleteUserUseCase = deleteUserUseCase;
+        this.listRecommendationsUseCase = listRecommendationsUseCase;
+    }
+
+    @Override
+    public Flux<List<UserRecommendationResponse>> getRecommendations(String id)  {
+        return Flux.defer(() ->
+                Mono.fromCallable(() -> listRecommendationsUseCase.execute(id))
+                        .map(UserApiPresenter::present)
+                        .flatMapMany(Flux::just)
+        );
     }
 
     @Override
