@@ -13,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,6 +33,7 @@ public class DefaultCategoryGateway implements CategoryGateway {
     }
 
     @Override
+    @Transactional
     public void deleteById(CategoryID id) {
         final String idValue = id.getValue();
         if (this.categoryRepository.existsById(idValue)) {
@@ -40,12 +42,14 @@ public class DefaultCategoryGateway implements CategoryGateway {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<Category> findById(CategoryID id) {
         return this.categoryRepository.findById(id.getValue())
                 .map(CategoryJpaEntity::toAggregate);
     }
 
     @Override
+    @Transactional
     public Category update(Category category) {
         return save(category);
     }
@@ -82,6 +86,13 @@ public class DefaultCategoryGateway implements CategoryGateway {
         return this.categoryRepository.existsByIds(ids).stream()
                 .map(CategoryID::from)
                 .toList();
+    }
+
+    @Override
+    @Transactional
+    public void deleteCategoryFromVideoCategory(CategoryID categoryId) {
+        final var id = categoryId.getValue();
+        this.categoryRepository.deleteCategoryFromVideoCategory(id);
     }
 
     private Category save(final Category category) {

@@ -19,4 +19,8 @@ public interface VideoGateway {
 
     List<VideoID> existsByIds(Iterable<VideoID> ids);
 
+    VideoMetrics getMetrics();
+
+    void deleteVideoFromUserVideo(VideoID videoId);
+
 }

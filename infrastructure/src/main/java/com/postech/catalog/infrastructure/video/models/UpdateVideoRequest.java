@@ -9,6 +9,7 @@ public record UpdateVideoRequest(
         @JsonProperty("title") String title,
         @JsonProperty("description") String description,
         @JsonProperty("url") String url,
+        @JsonProperty("click_count") Long clickCount,
         @JsonProperty("categories") Set<String> categories
 ) {
 }

@@ -7,6 +7,7 @@ public record VideoPreview(
         String title,
         String url,
         String description,
+        Long clickCount,
         Instant createdAt
 ) {
 
@@ -16,6 +17,7 @@ public record VideoPreview(
                 video.getTitle(),
                 video.getDescription(),
                 video.getUrl(),
+                video.getClickCount(),
                 video.getCreatedAt()
         );
     }

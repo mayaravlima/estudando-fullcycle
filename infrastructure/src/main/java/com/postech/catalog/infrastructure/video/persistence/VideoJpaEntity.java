@@ -35,6 +35,9 @@ public class VideoJpaEntity {
     @Column(name = "created_at", nullable = false, columnDefinition = "DATETIME(6)")
     private Instant createdAt;
 
+    @Column(name = "click_count", nullable = false)
+    private Long clickCount;
+
     @OneToMany(mappedBy = "video", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<VideoCategoryJpaEntity> categories;
 
@@ -47,6 +50,7 @@ public class VideoJpaEntity {
             final String title,
             final String description,
             final String url,
+            final Long clickCount,
             final Instant createdAt
     ) {
         this.id = id;
@@ -54,6 +58,7 @@ public class VideoJpaEntity {
         this.description = description;
         this.url = url;
         this.createdAt = createdAt;
+        this.clickCount = clickCount;
         this.categories = new HashSet<>(3);
     }
 
@@ -63,6 +68,7 @@ public class VideoJpaEntity {
                 aVideo.getTitle(),
                 aVideo.getDescription(),
                 aVideo.getUrl(),
+                aVideo.getClickCount(),
                 aVideo.getCreatedAt()
         );
 
@@ -79,6 +85,7 @@ public class VideoJpaEntity {
                 getDescription(),
                 getUrl(),
                 getCreatedAt(),
+                getClickCount(),
                 getCategories().stream()
                         .map(it -> CategoryID.from(it.getId().getCategoryId()))
                         .collect(Collectors.toSet())

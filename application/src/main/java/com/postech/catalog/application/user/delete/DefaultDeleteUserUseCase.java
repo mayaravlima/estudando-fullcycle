@@ -18,6 +18,7 @@ public class DefaultDeleteUserUseCase extends DeleteUserUseCase {
     @Override
     public void execute(final String id) {
         final var userId = UserID.from(id);
+        this.userGateway.deleteUserFromUserVideo(userId);
         this.userGateway.deleteById(userId);
     }
 }

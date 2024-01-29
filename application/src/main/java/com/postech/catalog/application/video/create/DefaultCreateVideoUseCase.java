@@ -35,7 +35,12 @@ public class DefaultCreateVideoUseCase extends CreateVideoUseCase {
 
     @Override
     public Either<Notification, CreateVideoOutput> execute(final CreateVideoCommand command) {
-        final var categories = toIdentifier(command.categories(), CategoryID::from);
+        final var clickCount = Objects.nonNull(command.clickCount())
+                ? command.clickCount()
+                : 0L;
+        final var categories = Objects.nonNull(command.categories())
+              ? toIdentifier(command.categories(), CategoryID::from)
+                : null;
 
         final var notification = Notification.create();
         notification.append(validateCategories(categories));
@@ -44,6 +49,7 @@ public class DefaultCreateVideoUseCase extends CreateVideoUseCase {
                 command.title(),
                 command.description(),
                 command.url(),
+                clickCount,
                 categories
         );
 

@@ -14,6 +14,7 @@ CREATE TABLE videos (
                         title VARCHAR(255) NOT NULL,
                         description VARCHAR(1000) NOT NULL,
                         url VARCHAR(255) NOT NULL,
+                        click_count INT NOT NULL DEFAULT 0,
                         created_at DATETIME(6) NOT NULL
 );
 

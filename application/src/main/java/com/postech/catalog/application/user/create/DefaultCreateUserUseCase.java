@@ -34,7 +34,9 @@ public class DefaultCreateUserUseCase extends CreateUserUseCase {
 
     @Override
     public Either<Notification, CreateUserOutput> execute(final CreateUserCommand command) {
-        final var videos = toIdentifier(command.favorites(), VideoID::from);
+        final var videos = Objects.nonNull(command.favorites())
+               ? toIdentifier(command.favorites(), VideoID::from)
+                : null;
 
         final var notification = Notification.create();
         notification.append(validateVideos(videos));

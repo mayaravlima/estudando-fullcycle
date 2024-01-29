@@ -3,6 +3,7 @@ package com.postech.catalog.infrastructure.user;
 import com.postech.catalog.domain.Identifier;
 import com.postech.catalog.domain.pagination.Pagination;
 import com.postech.catalog.domain.user.*;
+import com.postech.catalog.domain.video.VideoID;
 import com.postech.catalog.infrastructure.user.persistence.UserJpaEntity;
 import com.postech.catalog.infrastructure.user.persistence.UserRepository;
 import com.postech.catalog.infrastructure.utils.SqlUtils;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 import static com.postech.catalog.domain.utils.CollectionUtils.mapTo;
@@ -33,6 +35,7 @@ public class DefaultUserGateway implements UserGateway {
     }
 
     @Override
+    @Transactional
     public void deleteById(UserID anId) {
         final var userId = anId.getValue();
         if (this.userRepository.existsById(userId)) {
@@ -73,6 +76,13 @@ public class DefaultUserGateway implements UserGateway {
                 actualPage.getTotalElements(),
                 actualPage.toList()
         );
+    }
+
+    @Override
+    @Transactional
+    public void deleteUserFromUserVideo(UserID id) {
+        final var userId = id.getValue();
+        this.userRepository.deleteUserFromUserVideo(userId);
     }
 
 

@@ -52,6 +52,7 @@ public class DefaultUpdateVideoUseCase extends UpdateVideoUseCase {
                 command.title(),
                 command.description(),
                 command.url(),
+                command.clickCount(),
                 categories
         );
 

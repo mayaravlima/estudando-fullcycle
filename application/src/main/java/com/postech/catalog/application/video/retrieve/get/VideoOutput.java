@@ -13,6 +13,7 @@ public record VideoOutput(
         String title,
         String description,
         String url,
+        Long clickCount,
         Set<String> categories
 ) {
 
@@ -23,6 +24,7 @@ public record VideoOutput(
                 video.getTitle(),
                 video.getDescription(),
                 video.getUrl(),
+                video.getClickCount(),
                 CollectionUtils.mapTo(video.getCategories(), Identifier::getValue)
         );
     }

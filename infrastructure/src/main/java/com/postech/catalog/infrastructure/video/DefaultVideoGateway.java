@@ -3,6 +3,7 @@ package com.postech.catalog.infrastructure.video;
 import com.postech.catalog.domain.Identifier;
 import com.postech.catalog.domain.pagination.Pagination;
 import com.postech.catalog.domain.video.*;
+import com.postech.catalog.infrastructure.user.persistence.UserRepository;
 import com.postech.catalog.infrastructure.utils.SqlUtils;
 import com.postech.catalog.infrastructure.video.persistence.VideoJpaEntity;
 import com.postech.catalog.infrastructure.video.persistence.VideoRepository;
@@ -22,11 +23,14 @@ import static com.postech.catalog.domain.utils.CollectionUtils.nullIfEmpty;
 @Component
 public class DefaultVideoGateway implements VideoGateway {
     private final VideoRepository videoRepository;
+    private final UserRepository userRepository;
 
     public DefaultVideoGateway(
-            final VideoRepository videoRepository
+            final VideoRepository videoRepository,
+            final UserRepository userRepository
     ) {
         this.videoRepository = Objects.requireNonNull(videoRepository);
+        this.userRepository = Objects.requireNonNull(userRepository);
     }
 
     @Override
@@ -87,6 +91,20 @@ public class DefaultVideoGateway implements VideoGateway {
         return this.videoRepository.existsByIds(ids).stream()
                 .map(VideoID::from)
                 .toList();
+    }
+
+    @Override
+    public VideoMetrics getMetrics() {
+        final var totalOfVideos = this.videoRepository.totalOfVideos();
+        final var totalFavorites = this.userRepository.totalFavorites();
+        final var averageViews = this.videoRepository.averageClickCount();
+        return VideoMetrics.from(totalOfVideos, totalFavorites, averageViews);
+    }
+
+    @Override
+    @Transactional
+    public void deleteVideoFromUserVideo(VideoID videoId) {
+        this.videoRepository.deleteVideoFromUserVideo(videoId.getValue());
     }
 
     private Video save(final Video video) {

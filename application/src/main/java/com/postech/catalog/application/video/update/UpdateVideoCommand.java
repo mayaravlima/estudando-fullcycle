@@ -7,6 +7,7 @@ public record UpdateVideoCommand(
         String title,
         String description,
         String url,
+        Long clickCount,
         Set<String> categories
 
 ) {
@@ -16,6 +17,7 @@ public record UpdateVideoCommand(
             final String title,
             final String description,
             final String url,
+            final Long clickCount,
             final Set<String> categories
     ) {
         return new UpdateVideoCommand(
@@ -23,6 +25,7 @@ public record UpdateVideoCommand(
                 title,
                 description,
                 url,
+                clickCount,
                 categories
         );
     }

@@ -11,6 +11,8 @@ public record VideoResponse(
         @JsonProperty("description") String description,
         @JsonProperty("url") String url,
         @JsonProperty("created_at") Instant createdAt,
+
+        @JsonProperty("click_count") Long clickCount,
         @JsonProperty("categories_id") Set<String> categoriesId
 
 ) {

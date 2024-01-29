@@ -1,10 +1,7 @@
 package com.postech.catalog.infrastructure.api;
 
 import com.postech.catalog.domain.pagination.Pagination;
-import com.postech.catalog.infrastructure.video.models.CreateVideoRequest;
-import com.postech.catalog.infrastructure.video.models.UpdateVideoRequest;
-import com.postech.catalog.infrastructure.video.models.VideoListResponse;
-import com.postech.catalog.infrastructure.video.models.VideoResponse;
+import com.postech.catalog.infrastructure.video.models.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -84,5 +81,18 @@ public interface VideoAPI {
             @ApiResponse(responseCode = "500", description = "An internal server error was thrown"),
     })
     void deleteById(@PathVariable(name = "id") String id);
+
+
+    @GetMapping(
+            value = "metrics",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @Operation(summary = "Get videos metrics")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Video Metrics retrieved successfully"),
+            @ApiResponse(responseCode = "404", description = "Video Metrics was not found"),
+            @ApiResponse(responseCode = "500", description = "An internal server error was thrown"),
+    })
+    Mono<VideoMetricsResponse> getMetrics();
 
 }
