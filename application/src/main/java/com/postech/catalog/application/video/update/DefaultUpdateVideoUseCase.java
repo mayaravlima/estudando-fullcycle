@@ -1,6 +1,5 @@
 package com.postech.catalog.application.video.update;
 
-import com.postech.catalog.application.video.create.CreateVideoOutput;
 import com.postech.catalog.domain.Identifier;
 import com.postech.catalog.domain.catagory.CategoryGateway;
 import com.postech.catalog.domain.catagory.CategoryID;
@@ -53,6 +52,7 @@ public class DefaultUpdateVideoUseCase extends UpdateVideoUseCase {
                 command.title(),
                 command.description(),
                 command.url(),
+                command.clickCount(),
                 categories
         );
 

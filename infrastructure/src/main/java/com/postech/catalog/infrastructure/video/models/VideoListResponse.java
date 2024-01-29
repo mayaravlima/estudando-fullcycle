@@ -1,4 +1,4 @@
-package com.postech.catalog.infrastructure.category.models.videos;
+package com.postech.catalog.infrastructure.video.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -9,6 +9,8 @@ public record VideoListResponse(
         @JsonProperty("title") String title,
         @JsonProperty("description") String description,
         @JsonProperty("url") String url,
+
+        @JsonProperty("click_count") Long clickCount,
         @JsonProperty("created_at") Instant createdAt
 
 ) {

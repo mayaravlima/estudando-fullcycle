@@ -3,8 +3,8 @@ package com.postech.catalog.infrastructure.category.presenters;
 import com.postech.catalog.application.category.retrieve.get.CategoryOutput;
 import com.postech.catalog.application.category.retrieve.list.CategoryListOutput;
 import com.postech.catalog.domain.pagination.Pagination;
-import com.postech.catalog.infrastructure.category.models.category.CategoryListResponse;
-import com.postech.catalog.infrastructure.category.models.category.CategoryResponse;
+import com.postech.catalog.infrastructure.category.models.CategoryListResponse;
+import com.postech.catalog.infrastructure.category.models.CategoryResponse;
 
 import java.util.List;
 import java.util.stream.Collectors;

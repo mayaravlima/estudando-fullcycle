@@ -1,6 +1,5 @@
 package com.postech.catalog.application.video.update;
 
-import java.util.Optional;
 import java.util.Set;
 
 public record UpdateVideoCommand(
@@ -8,6 +7,7 @@ public record UpdateVideoCommand(
         String title,
         String description,
         String url,
+        Long clickCount,
         Set<String> categories
 
 ) {
@@ -17,6 +17,7 @@ public record UpdateVideoCommand(
             final String title,
             final String description,
             final String url,
+            final Long clickCount,
             final Set<String> categories
     ) {
         return new UpdateVideoCommand(
@@ -24,6 +25,7 @@ public record UpdateVideoCommand(
                 title,
                 description,
                 url,
+                clickCount,
                 categories
         );
     }

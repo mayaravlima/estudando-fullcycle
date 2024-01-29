@@ -10,6 +10,7 @@ public record VideoListOutput(
         String title,
         String description,
         String url,
+        Long clickCount,
         Instant createdAt
 ) {
 
@@ -19,6 +20,7 @@ public record VideoListOutput(
                 video.getTitle(),
                 video.getDescription(),
                 video.getUrl(),
+                video.getClickCount(),
                 video.getCreatedAt()
 
         );
@@ -30,6 +32,7 @@ public record VideoListOutput(
                 video.title(),
                 video.description(),
                 video.url(),
+                video.clickCount(),
                 video.createdAt()
         );
     }

@@ -4,6 +4,7 @@ import com.postech.catalog.application.video.create.CreateVideoCommand;
 import com.postech.catalog.application.video.create.CreateVideoOutput;
 import com.postech.catalog.application.video.create.CreateVideoUseCase;
 import com.postech.catalog.application.video.delete.DeleteVideoUseCase;
+import com.postech.catalog.application.video.metrics.GetVideoMetricsUseCase;
 import com.postech.catalog.application.video.retrieve.get.GetVideoByIdUseCase;
 import com.postech.catalog.application.video.retrieve.list.ListVideosUseCase;
 import com.postech.catalog.application.video.update.UpdateVideoCommand;
@@ -14,11 +15,8 @@ import com.postech.catalog.domain.pagination.Pagination;
 import com.postech.catalog.domain.validation.handler.Notification;
 import com.postech.catalog.domain.video.VideoSearchQuery;
 import com.postech.catalog.infrastructure.api.VideoAPI;
-import com.postech.catalog.infrastructure.category.models.videos.CreateVideoRequest;
-import com.postech.catalog.infrastructure.category.models.videos.UpdateVideoRequest;
-import com.postech.catalog.infrastructure.category.models.videos.VideoListResponse;
-import com.postech.catalog.infrastructure.category.models.videos.VideoResponse;
-import com.postech.catalog.infrastructure.category.presenters.VideoApiPresenter;
+import com.postech.catalog.infrastructure.video.models.*;
+import com.postech.catalog.infrastructure.video.presenters.VideoApiPresenter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
@@ -39,17 +37,21 @@ public class VideoController implements VideoAPI {
     private final UpdateVideoUseCase updateVideoUseCase;
     private final DeleteVideoUseCase deleteVideoUseCase;
 
+    private final GetVideoMetricsUseCase getVideoMetricsUseCase;
+
     public VideoController(
             final CreateVideoUseCase createVideoUseCase,
             final ListVideosUseCase listVideosUseCase,
             final GetVideoByIdUseCase getVideoByIdUseCase,
             final UpdateVideoUseCase updateVideoUseCase,
-            final DeleteVideoUseCase deleteVideoUseCase) {
+            final DeleteVideoUseCase deleteVideoUseCase,
+            final GetVideoMetricsUseCase getVideoMetricsUseCase){
         this.createVideoUseCase = createVideoUseCase;
         this.listVideosUseCase = listVideosUseCase;
         this.getVideoByIdUseCase = getVideoByIdUseCase;
         this.updateVideoUseCase = updateVideoUseCase;
         this.deleteVideoUseCase = deleteVideoUseCase;
+        this.getVideoMetricsUseCase = getVideoMetricsUseCase;
     }
 
 
@@ -59,6 +61,7 @@ public class VideoController implements VideoAPI {
                 input.title(),
                 input.description(),
                 input.url(),
+                input.clickCount(),
                 input.categories()
         );
 
@@ -92,11 +95,12 @@ public class VideoController implements VideoAPI {
 
     @Override
     public Mono<ResponseEntity<?>> updateById(String id, UpdateVideoRequest input) {
-         final var command = UpdateVideoCommand.with(
+        final var command = UpdateVideoCommand.with(
                 id,
                 input.title(),
                 input.description(),
                 input.url(),
+                input.clickCount(),
                 input.categories()
         );
 
@@ -113,5 +117,10 @@ public class VideoController implements VideoAPI {
     @Override
     public void deleteById(String id) {
         this.deleteVideoUseCase.execute(id);
+    }
+
+    @Override
+    public Mono<VideoMetricsResponse> getMetrics() {
+        return Mono.just(VideoApiPresenter.present(this.getVideoMetricsUseCase.execute()));
     }
 }

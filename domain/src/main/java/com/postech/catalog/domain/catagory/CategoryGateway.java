@@ -18,4 +18,6 @@ public interface CategoryGateway {
     Pagination<Category> findAll(CategorySearchQuery query);
 
     List<CategoryID> existsByIds(Iterable<CategoryID> ids);
+
+    void deleteCategoryFromVideoCategory(CategoryID categoryId);
 }

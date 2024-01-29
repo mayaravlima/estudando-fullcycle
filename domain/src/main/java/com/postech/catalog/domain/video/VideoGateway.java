@@ -2,6 +2,7 @@ package com.postech.catalog.domain.video;
 
 import com.postech.catalog.domain.pagination.Pagination;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface VideoGateway {
@@ -15,5 +16,11 @@ public interface VideoGateway {
     Video update(Video aVideo);
 
     Pagination<VideoPreview> findAll(VideoSearchQuery aQuery);
+
+    List<VideoID> existsByIds(Iterable<VideoID> ids);
+
+    VideoMetrics getMetrics();
+
+    void deleteVideoFromUserVideo(VideoID videoId);
 
 }

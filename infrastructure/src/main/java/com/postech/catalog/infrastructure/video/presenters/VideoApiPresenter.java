@@ -1,10 +1,12 @@
-package com.postech.catalog.infrastructure.category.presenters;
+package com.postech.catalog.infrastructure.video.presenters;
 
+import com.postech.catalog.application.video.metrics.VideoMetricsOutput;
 import com.postech.catalog.application.video.retrieve.get.VideoOutput;
 import com.postech.catalog.application.video.retrieve.list.VideoListOutput;
 import com.postech.catalog.domain.pagination.Pagination;
-import com.postech.catalog.infrastructure.category.models.videos.VideoListResponse;
-import com.postech.catalog.infrastructure.category.models.videos.VideoResponse;
+import com.postech.catalog.infrastructure.video.models.VideoListResponse;
+import com.postech.catalog.infrastructure.video.models.VideoMetricsResponse;
+import com.postech.catalog.infrastructure.video.models.VideoResponse;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,6 +19,7 @@ public interface VideoApiPresenter {
                 output.description(),
                 output.url(),
                 output.createdAt(),
+                output.clickCount(),
                 output.categories()
         );
     }
@@ -27,11 +30,12 @@ public interface VideoApiPresenter {
                 output.title(),
                 output.description(),
                 output.url(),
+                output.clickCount(),
                 output.createdAt()
         );
     }
 
-    public static Pagination<VideoListResponse> present(Pagination<VideoListOutput> videoListOutput) {
+   static Pagination<VideoListResponse> present(Pagination<VideoListOutput> videoListOutput) {
         List<VideoListOutput> content = videoListOutput.items();
         List<VideoListResponse> categoryListResponses = content.stream()
                 .map(VideoApiPresenter::convertToResponse)
@@ -45,13 +49,24 @@ public interface VideoApiPresenter {
         );
     }
 
+    static VideoMetricsResponse present(VideoMetricsOutput videoMetricsOutput) {
+        return new VideoMetricsResponse(
+                videoMetricsOutput.total(),
+                videoMetricsOutput.favorites(),
+                videoMetricsOutput.average()
+        );
+    }
+
     private static VideoListResponse convertToResponse(VideoListOutput categoryListOutput) {
         return new VideoListResponse(
                 categoryListOutput.id(),
                 categoryListOutput.title(),
                 categoryListOutput.description(),
                 categoryListOutput.url(),
+                categoryListOutput.clickCount(),
                 categoryListOutput.createdAt()
         );
     }
+
+
 }

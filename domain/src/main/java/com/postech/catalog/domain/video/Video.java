@@ -6,10 +6,8 @@ import com.postech.catalog.domain.utils.InstantUtils;
 import com.postech.catalog.domain.validation.ValidationHandler;
 
 import java.time.Instant;
-import java.time.Year;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 
 public class Video extends AggregateRoot<VideoID> {
@@ -18,6 +16,8 @@ public class Video extends AggregateRoot<VideoID> {
     private String description;
     private String url;
     private Instant createdAt;
+
+    private Long clickCount;
     private Set<CategoryID> categories;
 
     protected Video(
@@ -26,6 +26,7 @@ public class Video extends AggregateRoot<VideoID> {
             final String description,
             final String url,
             final Instant createdAt,
+            final Long clickCount,
             final Set<CategoryID> categories
     ) {
         super(id);
@@ -34,18 +35,21 @@ public class Video extends AggregateRoot<VideoID> {
         this.url = url;
         this.createdAt = createdAt;
         this.categories = categories;
+        this.clickCount = clickCount;
     }
 
     public Video update(
             final String title,
             final String description,
             final String url,
+            final Long clickCount,
             final Set<CategoryID> categories
     ) {
         this.title = title;
         this.description = description;
         this.url = url;
         this.setCategories(categories);
+        this.clickCount = clickCount;
         return this;
     }
 
@@ -65,6 +69,10 @@ public class Video extends AggregateRoot<VideoID> {
         return createdAt;
     }
 
+    public Long getClickCount() {
+        return clickCount;
+    }
+
     public Set<CategoryID> getCategories() {
         return categories != null ? Collections.unmodifiableSet(categories) : Collections.emptySet();
     }
@@ -77,6 +85,7 @@ public class Video extends AggregateRoot<VideoID> {
             final String title,
             final String description,
             final String url,
+            final Long clickCount,
             final Set<CategoryID> categories
     ) {
         final var now = InstantUtils.now();
@@ -87,6 +96,7 @@ public class Video extends AggregateRoot<VideoID> {
                 description,
                 url,
                 now,
+                clickCount,
                 categories
         );
     }
@@ -98,6 +108,7 @@ public class Video extends AggregateRoot<VideoID> {
                 video.getDescription(),
                 video.getUrl(),
                 video.getCreatedAt(),
+                video.getClickCount(),
                 new HashSet<>(video.getCategories())
         );
     }
@@ -108,6 +119,7 @@ public class Video extends AggregateRoot<VideoID> {
             final String description,
             final String url,
             final Instant createdAt,
+            final Long clickCount,
             final Set<CategoryID> categories
     ) {
         return new Video(
@@ -116,6 +128,7 @@ public class Video extends AggregateRoot<VideoID> {
                 description,
                 url,
                 createdAt,
+                clickCount,
                 categories
         );
     }

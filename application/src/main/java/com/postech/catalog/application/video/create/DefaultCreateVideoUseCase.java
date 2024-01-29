@@ -1,11 +1,8 @@
 package com.postech.catalog.application.video.create;
 
-import com.postech.catalog.application.category.create.CreateCategoryOutput;
 import com.postech.catalog.domain.Identifier;
-import com.postech.catalog.domain.catagory.Category;
 import com.postech.catalog.domain.catagory.CategoryGateway;
 import com.postech.catalog.domain.catagory.CategoryID;
-import com.postech.catalog.domain.exceptions.InternalErrorException;
 import com.postech.catalog.domain.exceptions.NotificationException;
 import com.postech.catalog.domain.validation.Error;
 import com.postech.catalog.domain.validation.ValidationHandler;
@@ -14,7 +11,6 @@ import com.postech.catalog.domain.video.Video;
 import com.postech.catalog.domain.video.VideoGateway;
 import io.vavr.control.Either;
 
-import java.time.Year;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Set;
@@ -39,7 +35,12 @@ public class DefaultCreateVideoUseCase extends CreateVideoUseCase {
 
     @Override
     public Either<Notification, CreateVideoOutput> execute(final CreateVideoCommand command) {
-        final var categories = toIdentifier(command.categories(), CategoryID::from);
+        final var clickCount = Objects.nonNull(command.clickCount())
+                ? command.clickCount()
+                : 0L;
+        final var categories = Objects.nonNull(command.categories())
+              ? toIdentifier(command.categories(), CategoryID::from)
+                : null;
 
         final var notification = Notification.create();
         notification.append(validateCategories(categories));
@@ -48,6 +49,7 @@ public class DefaultCreateVideoUseCase extends CreateVideoUseCase {
                 command.title(),
                 command.description(),
                 command.url(),
+                clickCount,
                 categories
         );
 
