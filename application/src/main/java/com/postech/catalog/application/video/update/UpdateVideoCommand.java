@@ -1,6 +1,5 @@
 package com.postech.catalog.application.video.update;
 
-import java.util.Optional;
 import java.util.Set;
 
 public record UpdateVideoCommand(

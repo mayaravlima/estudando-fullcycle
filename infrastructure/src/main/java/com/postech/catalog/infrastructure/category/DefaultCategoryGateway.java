@@ -22,7 +22,7 @@ import static com.postech.catalog.infrastructure.utils.SpecificationUtils.like;
 
 @Service
 @AllArgsConstructor
-public class CategoryMySQLGateway implements CategoryGateway {
+public class DefaultCategoryGateway implements CategoryGateway {
 
     private final CategoryRepository categoryRepository;
 

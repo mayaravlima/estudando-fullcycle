@@ -6,10 +6,8 @@ import com.postech.catalog.domain.utils.InstantUtils;
 import com.postech.catalog.domain.validation.ValidationHandler;
 
 import java.time.Instant;
-import java.time.Year;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 
 public class Video extends AggregateRoot<VideoID> {

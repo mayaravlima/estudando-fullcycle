@@ -1,4 +1,4 @@
-package com.postech.catalog.infrastructure.category.models.videos;
+package com.postech.catalog.infrastructure.video.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

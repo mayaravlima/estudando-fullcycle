@@ -29,7 +29,7 @@ public class VideoJpaEntity {
     @Column(name = "description", length = 4000)
     private String description;
 
-    @Column(name = "url", length = 255)
+    @Column(name = "url", nullable = false, length = 255)
     private String url;
 
     @Column(name = "created_at", nullable = false, columnDefinition = "DATETIME(6)")

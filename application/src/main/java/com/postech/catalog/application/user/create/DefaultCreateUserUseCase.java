@@ -1,14 +1,14 @@
-package com.postech.catalog.application.video.create;
+package com.postech.catalog.application.user.create;
 
 import com.postech.catalog.domain.Identifier;
-import com.postech.catalog.domain.catagory.CategoryGateway;
-import com.postech.catalog.domain.catagory.CategoryID;
 import com.postech.catalog.domain.exceptions.NotificationException;
+import com.postech.catalog.domain.user.User;
+import com.postech.catalog.domain.user.UserGateway;
 import com.postech.catalog.domain.validation.Error;
 import com.postech.catalog.domain.validation.ValidationHandler;
 import com.postech.catalog.domain.validation.handler.Notification;
-import com.postech.catalog.domain.video.Video;
 import com.postech.catalog.domain.video.VideoGateway;
+import com.postech.catalog.domain.video.VideoID;
 import io.vavr.control.Either;
 
 import java.util.ArrayList;
@@ -20,56 +20,54 @@ import java.util.stream.Collectors;
 import static io.vavr.API.Left;
 import static io.vavr.API.Try;
 
-public class DefaultCreateVideoUseCase extends CreateVideoUseCase {
-
-    private final CategoryGateway categoryGateway;
+public class DefaultCreateUserUseCase extends CreateUserUseCase {
+    private final UserGateway userGateway;
     private final VideoGateway videoGateway;
 
-    public DefaultCreateVideoUseCase(
-            final CategoryGateway categoryGateway,
+    public DefaultCreateUserUseCase(
+            final UserGateway userGateway,
             final VideoGateway videoGateway
     ) {
-        this.categoryGateway = Objects.requireNonNull(categoryGateway);
+        this.userGateway = Objects.requireNonNull(userGateway);
         this.videoGateway = Objects.requireNonNull(videoGateway);
     }
 
     @Override
-    public Either<Notification, CreateVideoOutput> execute(final CreateVideoCommand command) {
-        final var categories = toIdentifier(command.categories(), CategoryID::from);
+    public Either<Notification, CreateUserOutput> execute(final CreateUserCommand command) {
+        final var videos = toIdentifier(command.favorites(), VideoID::from);
 
         final var notification = Notification.create();
-        notification.append(validateCategories(categories));
+        notification.append(validateVideos(videos));
 
-        final var video = Video.newVideo(
-                command.title(),
-                command.description(),
-                command.url(),
-                categories
+        final var user = User.newUser(
+                command.name(),
+                command.email(),
+                videos
         );
 
-        video.validate(notification);
+        user.validate(notification);
 
         if (notification.hasError()) {
             throw new NotificationException("Could not create video", notification);
         }
 
-        return notification.hasError() ? Left(notification) : create(video);
+        return notification.hasError() ? Left(notification) : create(user);
     }
 
-    private Either<Notification, CreateVideoOutput> create(final Video video) {
-        return Try(() -> this.videoGateway.create(video))
+    private Either<Notification, CreateUserOutput> create(final User user) {
+        return Try(() -> this.userGateway.create(user))
                 .toEither()
-                .bimap(Notification::create, CreateVideoOutput::from);
+                .bimap(Notification::create, CreateUserOutput::from);
     }
 
 
-    private <T extends Identifier> ValidationHandler validateCategories(final Set<CategoryID> ids) {
+    private <T extends Identifier> ValidationHandler validateVideos(final Set<VideoID> ids) {
         final var notification = Notification.create();
         if (ids == null || ids.isEmpty()) {
             return notification;
         }
 
-        final var retrievedIds = categoryGateway.existsByIds(ids);
+        final var retrievedIds = videoGateway.existsByIds(ids);
 
         if (ids.size() != retrievedIds.size()) {
             final var missingIds = new ArrayList<>(ids);
@@ -79,7 +77,7 @@ public class DefaultCreateVideoUseCase extends CreateVideoUseCase {
                     .map(Identifier::getValue)
                     .collect(Collectors.joining(", "));
 
-            notification.append(new Error("Some categories could not be found: %s".formatted(missingIdsMessage)));
+            notification.append(new Error("Some videos could not be found: %s".formatted(missingIdsMessage)));
         }
 
         return notification;

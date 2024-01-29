@@ -1,10 +1,10 @@
-package com.postech.catalog.infrastructure.category.presenters;
+package com.postech.catalog.infrastructure.video.presenters;
 
 import com.postech.catalog.application.video.retrieve.get.VideoOutput;
 import com.postech.catalog.application.video.retrieve.list.VideoListOutput;
 import com.postech.catalog.domain.pagination.Pagination;
-import com.postech.catalog.infrastructure.category.models.videos.VideoListResponse;
-import com.postech.catalog.infrastructure.category.models.videos.VideoResponse;
+import com.postech.catalog.infrastructure.video.models.VideoListResponse;
+import com.postech.catalog.infrastructure.video.models.VideoResponse;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,7 +31,7 @@ public interface VideoApiPresenter {
         );
     }
 
-    public static Pagination<VideoListResponse> present(Pagination<VideoListOutput> videoListOutput) {
+   static Pagination<VideoListResponse> present(Pagination<VideoListOutput> videoListOutput) {
         List<VideoListOutput> content = videoListOutput.items();
         List<VideoListResponse> categoryListResponses = content.stream()
                 .map(VideoApiPresenter::convertToResponse)

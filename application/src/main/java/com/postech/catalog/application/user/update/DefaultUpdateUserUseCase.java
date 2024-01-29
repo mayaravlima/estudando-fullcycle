@@ -1,11 +1,12 @@
-package com.postech.catalog.application.video.update;
+package com.postech.catalog.application.user.update;
 
 import com.postech.catalog.domain.Identifier;
-import com.postech.catalog.domain.catagory.CategoryGateway;
-import com.postech.catalog.domain.catagory.CategoryID;
 import com.postech.catalog.domain.exceptions.DomainException;
 import com.postech.catalog.domain.exceptions.NotFoundException;
 import com.postech.catalog.domain.exceptions.NotificationException;
+import com.postech.catalog.domain.user.User;
+import com.postech.catalog.domain.user.UserGateway;
+import com.postech.catalog.domain.user.UserID;
 import com.postech.catalog.domain.validation.Error;
 import com.postech.catalog.domain.validation.ValidationHandler;
 import com.postech.catalog.domain.validation.handler.Notification;
@@ -23,65 +24,64 @@ import java.util.stream.Collectors;
 
 import static io.vavr.API.Try;
 
-public class DefaultUpdateVideoUseCase extends UpdateVideoUseCase {
+public class DefaultUpdateUserUseCase extends UpdateUserUseCase {
 
     private final VideoGateway videoGateway;
-    private final CategoryGateway categoryGateway;
+    private final UserGateway userGateway;
 
-    public DefaultUpdateVideoUseCase(
-            final VideoGateway videoGateway,
-            final CategoryGateway categoryGateway
+    public DefaultUpdateUserUseCase(
+            final UserGateway userGateway,
+            final VideoGateway videoGateway
     ) {
         this.videoGateway = Objects.requireNonNull(videoGateway);
-        this.categoryGateway = Objects.requireNonNull(categoryGateway);
+        this.userGateway = Objects.requireNonNull(userGateway);
     }
 
     @Override
-    public Either<Notification, UpdateVideoOutput> execute(final UpdateVideoCommand command) {
-        final var id = VideoID.from(command.id());
-        final var categories = toIdentifier(command.categories(), CategoryID::from);
+    public Either<Notification, UpdateUserOutput> execute(final UpdateUserCommand command) {
+        final var id = UserID.from(command.id());
+        final var videos = toIdentifier(command.favorites(), VideoID::from);
 
-        final var video = this.videoGateway.findById(id)
+        final var user = this.userGateway.findById(id)
                 .orElseThrow(notFoundException(id));
 
         final var notification = Notification.create();
-        notification.append(validateCategories(categories));
+        notification.append(validateVideos(videos));
 
 
-        video.update(
-                command.title(),
-                command.description(),
-                command.url(),
-                categories
+        user.update(
+                command.name(),
+                command.email(),
+                videos
         );
 
-        video.validate(notification);
+        user.validate(notification);
 
         if (notification.hasError()) {
             throw new NotificationException("Could not update Aggregate Video", notification);
         }
 
-        return notification.hasError() ? Either.left(notification) : update(video);
+        return notification.hasError() ? Either.left(notification) : update(user);
 
     }
 
-    private Either<Notification, UpdateVideoOutput> update(final Video video) {
-        return Try(() -> this.videoGateway.update(video))
+    private Either<Notification, UpdateUserOutput> update(final User user) {
+        return Try(() -> this.userGateway.update(user))
                 .toEither()
-                .bimap(Notification::create, UpdateVideoOutput::from);
+                .bimap(Notification::create, UpdateUserOutput::from);
     }
 
-    private Supplier<DomainException> notFoundException(final VideoID id) {
+    private Supplier<DomainException> notFoundException(final UserID id) {
         return () -> NotFoundException.with(Video.class, id);
     }
 
-    private <T extends Identifier> ValidationHandler validateCategories(final Set<CategoryID> ids) {
+    private <T extends Identifier> ValidationHandler validateVideos(final Set<VideoID> ids) {
         final var notification = Notification.create();
         if (ids == null || ids.isEmpty()) {
             return notification;
         }
 
-        final var retrievedIds = categoryGateway.existsByIds(ids);
+        final var retrievedIds = videoGateway.existsByIds(ids);
 
         if (ids.size() != retrievedIds.size()) {
             final var missingIds = new ArrayList<>(ids);
@@ -91,7 +91,7 @@ public class DefaultUpdateVideoUseCase extends UpdateVideoUseCase {
                     .map(Identifier::getValue)
                     .collect(Collectors.joining(", "));
 
-            notification.append(new Error("Some categories could not be found: %s".formatted(missingIdsMessage)));
+            notification.append(new Error("Some videos could not be found: %s".formatted(missingIdsMessage)));
         }
 
         return notification;

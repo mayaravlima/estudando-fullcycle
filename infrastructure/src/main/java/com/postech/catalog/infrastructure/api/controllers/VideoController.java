@@ -14,11 +14,11 @@ import com.postech.catalog.domain.pagination.Pagination;
 import com.postech.catalog.domain.validation.handler.Notification;
 import com.postech.catalog.domain.video.VideoSearchQuery;
 import com.postech.catalog.infrastructure.api.VideoAPI;
-import com.postech.catalog.infrastructure.category.models.videos.CreateVideoRequest;
-import com.postech.catalog.infrastructure.category.models.videos.UpdateVideoRequest;
-import com.postech.catalog.infrastructure.category.models.videos.VideoListResponse;
-import com.postech.catalog.infrastructure.category.models.videos.VideoResponse;
-import com.postech.catalog.infrastructure.category.presenters.VideoApiPresenter;
+import com.postech.catalog.infrastructure.video.models.CreateVideoRequest;
+import com.postech.catalog.infrastructure.video.models.UpdateVideoRequest;
+import com.postech.catalog.infrastructure.video.models.VideoListResponse;
+import com.postech.catalog.infrastructure.video.models.VideoResponse;
+import com.postech.catalog.infrastructure.video.presenters.VideoApiPresenter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
@@ -92,7 +92,7 @@ public class VideoController implements VideoAPI {
 
     @Override
     public Mono<ResponseEntity<?>> updateById(String id, UpdateVideoRequest input) {
-         final var command = UpdateVideoCommand.with(
+        final var command = UpdateVideoCommand.with(
                 id,
                 input.title(),
                 input.description(),

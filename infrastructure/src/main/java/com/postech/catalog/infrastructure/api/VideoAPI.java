@@ -1,15 +1,10 @@
 package com.postech.catalog.infrastructure.api;
 
-import com.postech.catalog.application.video.update.UpdateVideoUseCase;
 import com.postech.catalog.domain.pagination.Pagination;
-import com.postech.catalog.infrastructure.category.models.category.CategoryListResponse;
-import com.postech.catalog.infrastructure.category.models.category.CategoryResponse;
-import com.postech.catalog.infrastructure.category.models.category.CreateCategoryRequest;
-import com.postech.catalog.infrastructure.category.models.category.UpdateCategoryRequest;
-import com.postech.catalog.infrastructure.category.models.videos.CreateVideoRequest;
-import com.postech.catalog.infrastructure.category.models.videos.UpdateVideoRequest;
-import com.postech.catalog.infrastructure.category.models.videos.VideoListResponse;
-import com.postech.catalog.infrastructure.category.models.videos.VideoResponse;
+import com.postech.catalog.infrastructure.video.models.CreateVideoRequest;
+import com.postech.catalog.infrastructure.video.models.UpdateVideoRequest;
+import com.postech.catalog.infrastructure.video.models.VideoListResponse;
+import com.postech.catalog.infrastructure.video.models.VideoResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;

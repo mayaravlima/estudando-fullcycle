@@ -1,7 +1,6 @@
 package com.postech.catalog.infrastructure.category.models;
 
 import com.postech.catalog.JacksonTest;
-import com.postech.catalog.infrastructure.category.models.category.CreateCategoryRequest;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

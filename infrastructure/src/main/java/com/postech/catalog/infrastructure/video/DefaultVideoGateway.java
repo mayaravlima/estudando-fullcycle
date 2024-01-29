@@ -11,8 +11,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.StreamSupport;
 
 import static com.postech.catalog.domain.utils.CollectionUtils.mapTo;
 import static com.postech.catalog.domain.utils.CollectionUtils.nullIfEmpty;
@@ -74,6 +76,17 @@ public class DefaultVideoGateway implements VideoGateway {
                 actualPage.getTotalElements(),
                 actualPage.toList()
         );
+    }
+
+    @Override
+    public List<VideoID> existsByIds(Iterable<VideoID> videoIDs) {
+        final var ids = StreamSupport.stream(videoIDs.spliterator(), false)
+                .map(VideoID::getValue)
+                .toList();
+
+        return this.videoRepository.existsByIds(ids).stream()
+                .map(VideoID::from)
+                .toList();
     }
 
     private Video save(final Video video) {
