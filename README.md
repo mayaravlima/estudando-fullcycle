@@ -1,5 +1,5 @@
 # Pós-Tech Arquitetura e Desenvolvimento Java
-- Fase 4: Nesta terceira fase, o objetivo era criar um serviço de parquímetro escalável e confiável.
+- Fase 4: Nesta quarta fase, o era desenvolver uma aplicação web de streaming de vídeos utilizando Spring Framework, Spring WebFlux, Spring Boot e Spring Data. A aplicação deveria permitir do gerenciamento de vídeos.
 
 ## Índice
 
