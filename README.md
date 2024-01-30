@@ -61,7 +61,7 @@ Escolhi implementar o Domain-Driven Design (DDD) no projeto para criar uma repre
     - Repositórios (Repositories): Abstraem o acesso e a persistência de dados, permitindo que as entidades sejam recuperadas e armazenadas.
     - Serviços de Infraestrutura (Infrastructure Services): Fornecem funcionalidades relacionadas à infraestrutura, como logging, comunicação com serviços externos, etc.
 
-Além disso, estamos utilizando: 
+Além disso, estou utilizando: 
 - Flyway: O Flyway foi utilizado para a criação de migração de banco de dados e assim simplificar o gerenciamento e a evolução de esquemas de banco de dados.
 - JaCoCo: foi utilizado no projeto pela necessidade de avaliar e garantir a qualidade do código-fonte por meio da geração de relatórios de cobertura de testes. O JaCoCo oferece insights valiosos sobre quais partes do código estão sendo exercitadas pelos testes, permitindo uma abordagem mais eficaz na melhoria da robustez e confiabilidade do software.
 - Command Pattern: Optei pelo padrão Command no projeto devido à necessidade de desacoplamento entre módulos, permitindo que solicitações sejam tratadas de forma flexível e extensível. Essa abordagem facilita a adição de novos comandos sem alterar o código existente, promovendo uma arquitetura modular e fácil de dar suporte a operações de desfazer quando necessário. A utilização do padrão Command também melhora a legibilidade e manutenção do código, promovendo uma abstração eficaz das operações executadas.
