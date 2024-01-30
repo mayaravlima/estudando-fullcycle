@@ -38,9 +38,7 @@ public class DefaultCreateVideoUseCase extends CreateVideoUseCase {
         final var clickCount = Objects.nonNull(command.clickCount())
                 ? command.clickCount()
                 : 0L;
-        final var categories = Objects.nonNull(command.categories())
-              ? toIdentifier(command.categories(), CategoryID::from)
-                : null;
+        final var categories = toIdentifier(command.categories(), CategoryID::from);
 
         final var notification = Notification.create();
         notification.append(validateCategories(categories));
@@ -74,20 +72,16 @@ public class DefaultCreateVideoUseCase extends CreateVideoUseCase {
         if (ids == null || ids.isEmpty()) {
             return notification;
         }
-
         final var retrievedIds = categoryGateway.existsByIds(ids);
 
         if (ids.size() != retrievedIds.size()) {
             final var missingIds = new ArrayList<>(ids);
             missingIds.removeAll(retrievedIds);
-
             final var missingIdsMessage = missingIds.stream()
                     .map(Identifier::getValue)
                     .collect(Collectors.joining(", "));
-
             notification.append(new Error("Some categories could not be found: %s".formatted(missingIdsMessage)));
         }
-
         return notification;
     }
 

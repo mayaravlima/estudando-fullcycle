@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Video extends AggregateRoot<VideoID> {
+public class Video extends AggregateRoot<VideoID> implements Cloneable{
 
     private String title;
     private String description;
@@ -136,5 +136,14 @@ public class Video extends AggregateRoot<VideoID> {
     @Override
     public void validate(final ValidationHandler handler) {
         new VideoValidator(this, handler).validate();
+    }
+
+    @Override
+    public Video clone() {
+        try {
+           return (Video) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }

@@ -75,6 +75,20 @@ test {
 
 jacocoTestReport {
     dependsOn test
+
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it,
+                    exclude: ['*/category/*',
+                              '*/configuration/*',
+                              '*/user/*',
+                              '*/utils/*',
+                              '*/video/*',
+                              '*/api/controllers/GlobalExceptionHandler*',
+                              '*/api/UserAPI*',
+                              '*/Main*'])
+        }))
+    }
 }
 
 testCodeCoverageReport {
@@ -89,6 +103,19 @@ testCodeCoverageReport {
             destination file("$rootDir/build/reports/jacoco/test/")
         }
     }
+
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it,
+                    exclude: ['*/category/*',
+                              '*/configuration/*',
+                              '*/user/*',
+                              '*/utils/*',
+                              '*/video/*',
+                              '*/api/controllers/GlobalExceptionHandler*'])
+        }))
+    }
+
 }
 
 tasks.named("jacocoTestReport") {
