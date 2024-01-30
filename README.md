@@ -37,15 +37,17 @@ Siga as etapas abaixo para configurar e executar o projeto em seu ambiente local
    localhost:8080/
    ```
 ## Uso
-Foi utilizado o Swagger para documentar a API. Para acessar a documentação basta acessar o endpoint:
+Foi utilizado o Postman para documentar a API. Para acessar a documentação basta acessar o endpoint:
 
 ```sh
-    http://localhost:8080/swagger-ui/index.html#/
+    https://documenter.getpostman.com/view/11575875/2s9YysCgzs
 ```
-Considerações sobre alguns endpoints:
 
-### Category Controller
+Além disso, neste link há um vídeo com a demostração da utilização dos endpoints:
 
+```sh
+    https://drive.google.com/drive/folders/18WL3W9TtKrO2XRRNf905KIoVMQwfglpr?usp=sharing
+```
 
 ## Relatório Técnico
 ### Estrutura do projeto:
