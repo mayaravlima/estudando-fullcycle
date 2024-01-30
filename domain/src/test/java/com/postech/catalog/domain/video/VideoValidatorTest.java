@@ -20,6 +20,9 @@ public class VideoValidatorTest {
         final var expectedURL = "https://www.youtube.com/watch?v=1";
         final var expectedCategories = Set.of(CategoryID.unique());
 
+        final var expectedClickCount = 1L;
+
+
         final var expectedErrorCount = 1;
         final var expectedErrorMessage = "'title' should not be null";
 
@@ -27,6 +30,7 @@ public class VideoValidatorTest {
                 expectedTitle,
                 expectedDescription,
                 expectedURL,
+                expectedClickCount,
                 expectedCategories
         );
 
@@ -51,10 +55,14 @@ public class VideoValidatorTest {
         final var expectedErrorCount = 1;
         final var expectedErrorMessage = "'title' should not be empty";
 
+        final var expectedClickCount = 1L;
+
+
         final var actualVideo = Video.newVideo(
                 expectedTitle,
                 expectedDescription,
                 expectedURL,
+                expectedClickCount,
                 expectedCategories
         );
 
@@ -82,6 +90,9 @@ public class VideoValidatorTest {
         final var expectedURL = "https://www.youtube.com/watch?v=1";
         final var expectedCategories = Set.of(CategoryID.unique());
 
+        final var expectedClickCount = 1L;
+
+
         final var expectedErrorCount = 1;
         final var expectedErrorMessage = "'title' must be between 1 and 255 characters";
 
@@ -89,6 +100,7 @@ public class VideoValidatorTest {
                 expectedTitle,
                 expectedDescription,
                 expectedURL,
+                expectedClickCount,
                 expectedCategories
         );
 
@@ -108,6 +120,8 @@ public class VideoValidatorTest {
         final var expectedURL = "https://www.youtube.com/watch?v=1";
         final var expectedCategories = Set.of(CategoryID.unique());
 
+        final var expectedClickCount = 1L;
+
         final var expectedErrorCount = 1;
         final var expectedErrorMessage = "'description' should not be empty";
 
@@ -115,6 +129,7 @@ public class VideoValidatorTest {
                 expectedTitle,
                 expectedDescription,
                 expectedURL,
+                expectedClickCount,
                 expectedCategories
         );
 
@@ -139,10 +154,14 @@ public class VideoValidatorTest {
         final var expectedErrorCount = 1;
         final var expectedErrorMessage = "'url' should not be empty";
 
+        final var expectedClickCount = 1L;
+
+
         final var actualVideo = Video.newVideo(
                 expectedTitle,
                 expectedDescription,
                 expectedURL,
+                expectedClickCount,
                 expectedCategories
         );
 
@@ -174,6 +193,8 @@ public class VideoValidatorTest {
         final var expectedURL = "https://www.youtube.com/watch?v=1";
         final var expectedCategories = Set.of(CategoryID.unique());
 
+        final var expectedClickCount = 1L;
+
         final var expectedErrorCount = 1;
         final var expectedErrorMessage = "'description' must be between 1 and 4000 characters";
 
@@ -181,6 +202,7 @@ public class VideoValidatorTest {
                 expectedTitle,
                 expectedDescription,
                 expectedURL,
+                expectedClickCount,
                 expectedCategories
         );
 
@@ -214,6 +236,8 @@ public class VideoValidatorTest {
                 """;
         final var expectedCategories = Set.of(CategoryID.unique());
 
+        final var expectedClickCount = 1L;
+
         final var expectedErrorCount = 1;
         final var expectedErrorMessage = "'url' must be between 1 and 255 characters";
 
@@ -221,6 +245,7 @@ public class VideoValidatorTest {
                 expectedTitle,
                 expectedDescription,
                 expectedURL,
+                expectedClickCount,
                 expectedCategories
         );
 

@@ -19,11 +19,13 @@ public class VideoTest {
                 """;
         final var expectedURL = "https://www.youtube.com/watch?v=1";
         final var expectedCategories = Set.of(CategoryID.unique());
+        final var expectedClickCount = 1L;
 
         final var actualVideo = Video.newVideo(
                 expectedTitle,
                 expectedDescription,
                 expectedURL,
+                expectedClickCount,
                 expectedCategories
         );
 
@@ -46,11 +48,14 @@ public class VideoTest {
                 """;
         final var expectedURL = "https://www.youtube.com/watch?v=1";
         final var expectedCategories = Set.of(CategoryID.unique());
+        final var expectedClickCount = 1L;
+
 
         final var video = Video.newVideo(
                 expectedTitle,
                 expectedDescription,
                 expectedURL,
+                expectedClickCount,
                 expectedCategories
         );
 
@@ -60,6 +65,7 @@ public class VideoTest {
                 expectedTitle,
                 expectedDescription,
                 expectedURL,
+                expectedClickCount,
                 expectedCategories
         );
 

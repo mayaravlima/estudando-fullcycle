@@ -1,6 +1,7 @@
 package com.postech.catalog.domain.user;
 
 import com.postech.catalog.domain.AggregateRoot;
+import com.postech.catalog.domain.catagory.CategoryValidator;
 import com.postech.catalog.domain.validation.ValidationHandler;
 import com.postech.catalog.domain.video.VideoID;
 
@@ -109,6 +110,6 @@ public class User extends AggregateRoot<UserID> {
 
     @Override
     public void validate(ValidationHandler handler) {
-
+        new UserValidator(this, handler).validate();
     }
 }
